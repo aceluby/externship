@@ -1,0 +1,17 @@
+pipeline:
+  # test on PR
+  test:
+    when:
+      event: pull_request
+    image: cpe.docker.target.com/cpe/couscoussearch-docker:latest
+    commands:
+      - couscous generate
+  # publish on merge
+  build:
+    when:
+      event: push
+      branch: master
+    image: cpe.docker.target.com/cpe/couscoussearch-docker:latest
+    pull: true
+    commands:
+      - couscous deploy --repository $DRONE_REPO_LINK
